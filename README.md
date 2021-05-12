@@ -1,0 +1,2 @@
+# tickPy
+System obsługi ticketów
