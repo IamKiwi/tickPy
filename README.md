@@ -1,11 +1,6 @@
-# tickPy
-System obsługi ticketów
+# System obsługi ticketów - tickPy
 
-
-## System obsługi ticketów - tickPy
-
-# Założenia projektu
-Technologie:
+# Technologie:
 
 Język Python 3.8
 Framework Django - Backend
@@ -20,13 +15,13 @@ ticket = zgłoszenie
 - Inżynier - osoba przyjmująca/wystawiająca/rozwiązująca zgłoszenia problemów
 - Użytkownik - osoba wystawiająca zgłoszenia problemów
 
-# Administrator - zarządza aplikacją:
+Administrator - zarządza aplikacją:
 - tworzy/modyfikuje/usuwa użytkowników
 - tworzy/modyfikuje/usuwa kolejki
 - tworzy/modyfikuje/usuwa zasoby (na co można wystawić ticket,
 np. serwer x, stacja robocza y, laptop z)
 
-# Inżynier - osoba odpowiedzialna za rozwiązywanie ticketów:
+Inżynier - osoba odpowiedzialna za rozwiązywanie ticketów:
 - pobiera tickety ze swojej kolejki, do której obsługi został przypisany przez 
 administratora
 - może oznaczyć ticket jako:
@@ -39,7 +34,7 @@ administratora
     i podjęcie działania
 - może zmienić priorytet zgłoszenia
     
-# Użytkownik - osoba wystawiająca zgłoszenia problemów:
+Użytkownik - osoba wystawiająca zgłoszenia problemów:
 - może wystawić zgłoszenie na dowolną kolejkę
 - może zgłosić problem tylko dla zasobów, dla których przypisał ją administrator
 - może ustalić priorytet zgłoszenia
