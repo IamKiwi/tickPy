@@ -2,9 +2,9 @@
 
 # Technologie:
 
-Język Python 3.8
-Framework Django - Backend
-Vue.js - Frontend
+- Język Python 3.8
+- Framework Django - Backend
+- Vue.js - Frontend
 
 # Funkcjonalności:
 
