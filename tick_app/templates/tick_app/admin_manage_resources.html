@@ -51,14 +51,16 @@
                                         </tr>
                                         </thead>
                                         <tbody>
+                                        {% for resource in resources %}
                                         <tr>
-                                            <td>R_000001</td>
-                                            <td>WWS000001</td>
-                                            <td>Workstation</td>
-                                            <td>SN000000012</td>
+                                            <td>{{ resource.id }}</td>
+                                            <td>{{ resource.name }}</td>
+                                            <td>{{ resource.category.name }}</td>
+                                            <td>{{ resource.serial_no }}</td>
                                             <td>Active</td>
-                                            <td><a href="#" class="btn btn-small btn-danger">X</a></td>
+                                            <td><a href="#" class="btn btn-sm btn-danger">X</a></td>
                                         </tr>
+                                        {% endfor %}
                                         </tbody>
                                     </table>
 

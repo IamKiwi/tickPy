@@ -10,6 +10,7 @@ urlpatterns = [
     path('track_my_tickets/', views.customer_ticket_tracking, name='track_my_tickets'),
 
     path('manage_resources/', views.admin_manage_resources, name='admin_manage_resources'),
+    path('manage_queues/', views.admin_manage_queues, name='admin_manage_queues'),
     # path('create_category/', views.create_category, name='create_category')
 
 ]
