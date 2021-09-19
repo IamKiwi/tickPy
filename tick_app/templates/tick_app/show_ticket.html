@@ -1,0 +1,153 @@
+{% extends 'tick_app/main.html' %}
+{% load static %}
+{% block title %} INC_{{ticket.id}} {% endblock %}
+{% block content %}
+
+<body id="page-top">
+<div id="wrapper">
+    {% include 'tick_app/sidebar.html'%}
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+            <!-- Topbar -->
+            {% include 'tick_app/navbar.html'%}
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+                <!-- Page Heading -->
+                <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                    <h1 class="h3 mb-0 text-gray-800">Ticket details</h1>
+                </div>
+
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">INC_{{ticket.id}}</h6>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST">
+                            {% csrf_token %}
+                            <div class="form-group row">
+                                <div class="col-sm-4 mb-3 mb-sm-0">
+                                    <h4 class="small font-weight-bold">Opened by</h4>
+                                    <input type="text" class="form-control" value="Username goes here" disabled>
+                                </div>
+                                <div class="col-sm-4 mb-3 mb-sm-0">
+                                    <h4 class="small font-weight-bold">Queue</h4>
+                                    {{ ticket_form.queue }}
+                                </div>
+                                <div class="col-sm-4">
+                                    <h4 class="small font-weight-bold">Priority</h4>
+                                    {{ ticket_form.priority}}
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-4">
+                                    <h4 class="small font-weight-bold">Created on</h4>
+                                    <input type="text" class="form-control" value="{{ ticket.date_created}}" disabled>
+                                </div>
+                                <div class="col-sm-4">
+                                    <h4 class="small font-weight-bold">Resource</h4>
+                                    {{ ticket_form.resource}}
+                                </div>
+                                <div class="col-sm-4">
+                                    <h4 class="small font-weight-bold">Status</h4>
+                                    <input type="text" class="form-control" value="{{ ticket.status}}" disabled>
+                                    {{ ticket_form.status}}
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-12">
+                                    <h4 class="small font-weight-bold">Short description</h4>
+                                    {{ ticket_form.short_desc}}
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-12">
+                                    <h4 class="small font-weight-bold">Description</h4>
+                                    {{ ticket_form.long_desc}}
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-sm-3 mb-3 mb-sm-0">
+                                    {% if ticket.status == 'Abandoned' or ticket.status == 'Resolved'%}
+                                    <button class="btn btn-info btn-user btn-block" disabled>
+                                        Info required
+                                    </button>
+                                    {% else %}
+                                    <a class="btn btn-info btn-block" href="#" data-toggle="modal"
+                                       data-target="#addCommentModal">
+                                        Info Required
+                                    </a>
+                                    {% endif %}
+                                </div>
+                                <div class="col-sm-3 mb-3 mb-sm-0">
+                                    {% if ticket.status == 'Abandoned' or ticket.status == 'Resolved'%}
+                                    <button class="btn btn-warning btn-user btn-block" disabled>
+                                        Abandon
+                                    </button>
+                                    {% else %}
+                                    <a href="{% url 'abandon_ticket' ticket.id %}" class="btn btn-warning btn-user btn-block">
+                                        Abandon
+                                    </a>
+                                    {% endif %}
+                                </div>
+                                <div class="col-sm-3 mb-3 mb-sm-0">
+                                    {% if ticket.status == 'Abandoned' or ticket.status == 'Resolved' %}
+                                    <button class="btn btn-success btn-user btn-block" disabled>
+                                        Resolve
+                                    </button>
+                                    {% else %}
+                                    <a href="{% url 'resolve_ticket' ticket.id %}" class="btn btn-success btn-user btn-block">
+                                        Resolve
+                                    </a>
+                                    {% endif %}
+                                </div>
+                                <div class="col-sm-3 mb-3 mb-sm-0">
+                                    {% if ticket.status == 'Abandoned' or ticket.status == 'Resolved'%}
+                                    <button class="btn btn-primary btn-user btn-block" disabled>
+                                        Update
+                                    </button>
+                                    {% else %}
+                                    <input type="submit" class="btn btn-primary btn-user btn-block" value="Update">
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Comments history</h6>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST">
+                            {% for comment in ticket_comments%}
+                            <div class="form-group row">
+                                <div class="col-sm-12">
+                                    <h4 class="small font-weight-bold">Username goes here</h4>
+                                    <h4 class="small font-weight-bold">{{ comment.date_created }}</h4>
+                                    <p>{{ comment }}</p>
+                                    <hr>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </form>
+                    </div>
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            <!-- End of Main Content -->
+            <!-- Footer -->
+        </div>
+        {% include 'tick_app/footer.html' %}
+        {% include 'tick_app/add_comment_to_ticket.html' %}
+        <!-- End of Footer -->
+        <!-- End of Content Wrapper -->
+    </div>
+</div>
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+{% endblock %}

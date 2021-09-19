@@ -57,8 +57,17 @@
                                             <td>{{ resource.name }}</td>
                                             <td>{{ resource.category.name }}</td>
                                             <td>{{ resource.serial_no }}</td>
-                                            <td>Active</td>
-                                            <td><a href="#" class="btn btn-sm btn-danger">X</a></td>
+                                            <td>{{ resource.status }}</td>
+                                            <td>
+                                                <form action="{% url 'admin_decom_resource' resource.id %}" method="GET">
+                                                    {% csrf_token %}
+                                                    {% if resource.status == "DECOMMISIONED" %}
+                                                        <input type="submit" value="X" class="btn btn-sm btn-danger" disabled>
+                                                    {% else %}
+                                                        <input type="submit" value="X" class="btn btn-sm btn-danger">
+                                                    {% endif %}
+                                                </form>
+                                            </td>
                                         </tr>
                                         {% endfor %}
                                         </tbody>

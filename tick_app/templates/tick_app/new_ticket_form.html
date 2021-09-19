@@ -24,46 +24,29 @@
                         <h6 class="m-0 font-weight-bold text-primary">Fill in ticket form and click submit</h6>
                     </div>
                     <div class="card-body">
-                        <form id="new-ticket-form">
+                        <form id="new-ticket-form" method="POST">
+                            {% csrf_token %}
                             <div class="form-group row">
                                 <div class="col-sm-4 mb-3 mb-sm-0">
-                                    <select id="select-queue" class="form-control">
-                                        <option value="" disabled selected>Assignement Queue</option>
-                                        <option value="1">Dummy queue 1</option>
-                                        <option value="2">Dummy queue 2</option>
-                                        <option value="3">Dummy queue 3</option>
-                                        <option value="4">Dummy queue 4</option>
-                                    </select>
+                                    {{ ticket_form.queue }}
                                 </div>
                                 <div class="col-sm-4">
-                                    <select id="select-priority" class="form-control">
-                                        <option value="" disabled selected>Priority</option>
-                                        <option value="1">Critical (1)</option>
-                                        <option value="2">High (2)</option>
-                                        <option value="3">Moderate (3)</option>
-                                        <option value="4">Low (4)</option>
-                                        <option value="5">Info (5)</option>
-                                    </select>
+                                    {{ ticket_form.priority}}
                                 </div>
                                 <div class="col-sm-4">
-                                    <select id="select-resource" class="form-control">
-                                        <option value="" disabled selected>Resource</option>
-                                        {% for resource in resources%}
-                                            <option value="{{ resource.id }}">{{ resource.name }}</option>
-                                        {% endfor %}
-                                    </select>
+                                    {{ ticket_form.resource}}
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-12 mb-3 mb-sm-0">
-                                    <input type="text" class="form-control" id="text-short-description"
-                                           placeholder="Short description">
+                                    {{ ticket_form.short_desc}}
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-12 mb-3 mb-sm-0">
-                                    <textarea rows="5" class="form-control" id="text-full-description">Describe your problem...</textarea>
+                                    {{ ticket_form.long_desc}}
                                 </div>
+                                    {{ ticket_form.status}}
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-6 mb-3 mb-sm-0">
@@ -72,12 +55,10 @@
                                     </a>
                                 </div>
                                 <div class="col-sm-6 mb-3 mb-sm-0">
-                                    <a href="#" class="btn btn-success btn-user btn-block">
-                                        Submit ticket
-                                    </a>
+                                    <input type="submit" class="btn btn-success btn-user btn-block" value="Submit ticket">
                                 </div>
+                            </div>
                         </form>
-                    </div>
                 </div>
             </div>
             <!-- /.container-fluid -->

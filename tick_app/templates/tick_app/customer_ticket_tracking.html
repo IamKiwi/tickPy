@@ -37,32 +37,16 @@
                                 </tr>
                                 </thead>
                                 <tbody>
+                                {% for ticket in tickets %}
                                 <tr>
-                                    <td>
-                                        <a href="#">TIC_0000000</a>
-                                    </td>
-                                    <td>Server AS_001A Down</td>
-                                    <td>D Corp/Linux Administration/Alpha Squad</td>
-                                    <td>2</td>
-                                    <td>Submitted</td>
-                                    <td>2021-08-09 15:00:00</td>
+                                    <td><a href="{% url 'show_ticket' ticket.id %}">INC_{{ ticket.id }}</a></td>
+                                    <td>{{ ticket.short_desc }}</td>
+                                    <td>{{ ticket.queue }}</td>
+                                    <td>{{ ticket.priority }}</td>
+                                    <td>{{ ticket.status }}</td>
+                                    <td>{{ ticket.date_created }}</td>
                                 </tr>
-                                <tr>
-                                    <td>TIC_0000001</td>
-                                    <td>Random Reboots</td>
-                                    <td>D Corp/Windows Administration</td>
-                                    <td>3</td>
-                                    <td>Submitted</td>
-                                    <td>2021-08-10 21:00:00</td>
-                                </tr>
-                                <tr>
-                                    <td>TIC_0000002</td>
-                                    <td>Printer not working</td>
-                                    <td>D Corp/Generic IT Support</td>
-                                    <td>4</td>
-                                    <td>Submitted</td>
-                                    <td>2021-08-13 12:00:00</td>
-                                </tr>
+                                {% endfor %}
                                 </tbody>
                             </table>
 
