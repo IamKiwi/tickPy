@@ -1,6 +1,6 @@
 {% extends 'tick_app/main.html' %}
 {% load static %}
-{% block title %} Engineer queue tracking {% endblock %}
+{% block title %} Assigned to me {% endblock %}
 {% block content %}
 
 <body id="page-top">
@@ -16,12 +16,12 @@
             <div class="container-fluid">
                 <!-- Page Heading -->
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h1 class="h3 mb-0 text-gray-800">Queues tracking</h1>
+                    <h1 class="h3 mb-0 text-gray-800">Tickets I work on</h1>
                 </div>
 
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Check status of tickets on my queues</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">Check status of tickets that I work on</h6>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -39,8 +39,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {% for i in my_tickets %}
-                                {% for ticket in i %}
+                                {% for ticket in tickets %}
                                 <tr>
                                     <td><a href="{% url 'show_ticket' ticket.id %}">INC_{{ ticket.id }}</a></td>
                                     <td>{{ ticket.user.first_name}} {{ ticket.user.last_name}}</td>
@@ -51,7 +50,6 @@
                                     <td>{{ ticket.assigned_engineer }}</td>
                                     <td>{{ ticket.date_created }}</td>
                                 </tr>
-                                {% endfor %}
                                 {% endfor %}
                                 </tbody>
                             </table>

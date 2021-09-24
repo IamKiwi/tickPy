@@ -14,7 +14,7 @@
                 <div class="modal-body">
                     {% csrf_token %}
                     {{ comment_form.comment }}
-
+                    <input type="text" id="id_user"   name="user"   value="{{user.id}}"   hidden="">
                     <input type="text" id="id_ticket" name="ticket" value="{{ticket.id}}" hidden>
 
                     <div class="modal-footer">

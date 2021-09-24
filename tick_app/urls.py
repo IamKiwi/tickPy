@@ -14,12 +14,11 @@ urlpatterns = [
     path('resolve_ticket/<str:pk>', views.resolve_ticket, name='resolve_ticket'),
     path('assign_ticket/<str:pk>', views.assign_ticket, name='assign_ticket'),
     path('engineer_queue_tracking/', views.engineer_queue_tracking, name='engineer_queue_tracking'),
+    path('engineer_assigned_to_me/', views.show_tickets_assigned_to_me, name='engineer_assigned_to_me'),
     path('add_comment/<str:pk>', views.add_comment_to_ticket, name='add_comment'),
 
     path('manage_resources/', views.admin_manage_resources, name='admin_manage_resources'),
     path('decom_resource/<str:pk>', views.admin_decom_resource, name='admin_decom_resource'),
     path('manage_queues/', views.admin_manage_queues, name='admin_manage_queues'),
     path('manage_users/', views.admin_manage_users, name='admin_manage_users'),
-    # path('create_category/', views.create_category, name='create_category')
-
 ]

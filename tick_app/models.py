@@ -65,6 +65,7 @@ class Comment(models.Model):
     comment = models.TextField()
     date_created = models.DateTimeField(auto_now_add=True, null=True)
     ticket = models.ForeignKey(Ticket, null=True, on_delete=models.SET_NULL)
+    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     # user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
 
     def __str__(self):

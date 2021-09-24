@@ -37,7 +37,6 @@ def register_page(request):
 @unauthenticated_user
 def login_page(request):
     if request.method == 'POST':
-        print(request.POST)
         username = request.POST.get('username')
         password = request.POST.get('password')
 
@@ -57,29 +56,29 @@ def logout_user(request):
     return redirect('login')
 
 
-@allowed_users(allowed_roles=['admin', 'engineer', 'customer'])
 @login_required(login_url='login')
 def home(request):
     group = request.user.groups.get()
-    print(group)
 
-    total_opened_tickets = 0
+    total_tickets = 0
     total_resolved_tickets = 0
     total_new_tickets = 0
     total_in_progress = 0
+    total_abandoned = 0
 
     tickets = Ticket.objects.all()
-    total_opened_tickets = tickets.count()
+    total_tickets = tickets.count()
     total_resolved_tickets = tickets.filter(status="Resolved").count()
+    total_in_progress = tickets.filter(status="Active").count()
     total_new_tickets = tickets.filter(status="New").count()
-
-
+    total_abandoned = tickets.filter(status="Abandoned").count()
 
     context = {
-        'total_opened_tickets': total_opened_tickets,
+        'total_tickets': total_tickets,
         'total_resolved_tickets': total_resolved_tickets,
         'total_new_tickets': total_new_tickets,
-        'total_in_progress': total_in_progress
+        'total_in_progress': total_in_progress,
+        'total_abandoned': total_abandoned
     }
 
     return render(request, 'tick_app/home.html', context)
@@ -89,20 +88,15 @@ def home(request):
 @login_required(login_url='login')
 def create_new_ticket(request):
     resources = Resource.objects.filter(status="Active")
-    queues = Queue.objects.all()
     ticketForm = TicketForm()
     current_user = request.user
+    queues = Queue.objects.filter(assigned_users=current_user)
 
     if request.method == "POST":
-        print(request.POST)
         form = TicketForm(request.POST)
         if form.is_valid():
-            print("Data from Ticket Form")
-            print(request.POST)
             form.save()
             return redirect('track_my_tickets')
-        else:
-            print("Coś się wyjebało i sobie ten głupi ryj rozwaliło : )")
 
     context = {
         'resources': resources,
@@ -130,17 +124,7 @@ def show_ticket(request, pk):
         ticketForm.fields['long_desc'].widget.attrs['disabled'] = True
 
     if request.method == "POST":
-        print('We will be updating ticket : )')
-        print(request.POST)
-        print(ticket)
-
         details = ""
-
-        print(f"{request.POST.get('priority')} -> {ticket.priority}")
-        print(f"{request.POST.get('queue')} -> {ticket.queue.id}")
-        print(f"{request.POST.get('resource')} -> {ticket.resource.id}")
-        print(f"{request.POST.get('short_desc')} -> {ticket.short_desc}")
-        print(f"{request.POST.get('long_desc')} -> {ticket.long_desc}")
 
         if request.POST.get('priority') != ticket.priority:
             details += f"Priority changed from {ticket.priority} to {request.POST.get('priority')}\n"
@@ -161,12 +145,20 @@ def show_ticket(request, pk):
             comment = Comment.objects.create(**{'comment': details, 'ticket': ticket})
 
         form = TicketForm(request.POST, instance=ticket)
+
+        ticket.status = 'Updated'
+        ticket = Ticket.save(ticket, update_fields=['status'])
+
+        ticket = Ticket.objects.get(id=pk)
+        comment = ticket.comment_set.last()
+
+        comment_user = User.objects.get(id=request.POST['user'])
+
+        comment.user = comment_user
+        comment = Comment.save(comment, update_fields=['user'])
+
         if form.is_valid():
             form.save()
-
-            ticket.status = 'Updated'
-            ticket = Ticket.save(ticket, update_fields=['status'])
-
             return redirect('/show_ticket/' + pk)
 
     context = {
@@ -179,7 +171,7 @@ def show_ticket(request, pk):
     return render(request, 'tick_app/show_ticket.html', context)
 
 
-@allowed_users(allowed_roles=['admin', 'engineer', 'customer'])
+@allowed_users(allowed_roles=['admin', 'engineer'])
 @login_required(login_url='login')
 def assign_ticket(request, pk):
     user_first_name = request.user.first_name
@@ -195,13 +187,27 @@ def assign_ticket(request, pk):
         return redirect('/show_ticket/' + pk)
 
 
+@allowed_users(allowed_roles=['admin', 'engineer'])
+@login_required(login_url='login')
+def show_tickets_assigned_to_me(request):
+    user_first_name = request.user.first_name
+    user_last_name = request.user.last_name
+    working_engineer = f"{user_first_name} {user_last_name}"
+
+    tickets = Ticket.objects.all()
+    tickets_assigned_to_me = tickets.filter(assigned_engineer=working_engineer)
+
+    context = {'tickets': tickets_assigned_to_me}
+
+    return render(request, 'tick_app/engineer_assigned_to_me.html', context)
+
+
 @allowed_users(allowed_roles=['admin', 'engineer', 'customer'])
 @login_required(login_url='login')
 def handle_comment(request, pk, status):
     ticket = Ticket.objects.get(id=pk)
 
     form = CommentForm(request.POST)
-    print("Printing POST (comment): ", request.POST)
 
     if form.is_valid():
         form.save()
@@ -251,8 +257,6 @@ def engineer_queue_tracking(request):
         my_qu = Queue.objects.get(id=i.id)
         my_queues.append(my_qu.ticket_set.all())
 
-    print(my_queues)
-
     context = {"my_tickets": my_queues}
 
     return render(request, 'tick_app/engineer_queue_tracking.html', context)
@@ -267,18 +271,14 @@ def admin_manage_resources(request):
     resourcesForm = ResourceForm()
 
     if request.method == "POST" and request.POST.get('serial_no') is None:
-        print("Printing POST (category): ", request.POST)
         form = CategoryForm(request.POST)
         if form.is_valid():
-            print(request.POST.get('category_name'))
             form.save()
             return redirect('admin_manage_resources')
     else:
-        print("Printing POST (resource): ", request.POST)
         form = ResourceForm(request.POST)
 
         if form.is_valid():
-            print(request.POST)
             form.save()
             return redirect('admin_manage_resources')
 
@@ -299,7 +299,6 @@ def admin_manage_queues(request):
     queueForm = QueueForm()
 
     if request.method == "POST":
-        print("Printing POST (queue): ", request.POST)
         form = QueueForm(request.POST)
         if form.is_valid():
             form.save()
@@ -317,8 +316,23 @@ def admin_manage_queues(request):
 @login_required(login_url='login')
 def admin_manage_users(request):
     users = User.objects.all()
+    user_form = CreateUserForm()
 
-    context = {"users": users}
+    if request.method == "POST":
+        form = CreateUserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            just_created_user = User.objects.last()
+            engineer_group = Group.objects.get(name="engineer")
+            engineer_group.user_set.add(just_created_user)
+
+            return redirect('admin_manage_users')
+
+    context = {
+        "users": users,
+        "user_form": user_form
+    }
+
     return render(request, 'tick_app/admin_manage_users.html', context)
 
 
@@ -328,7 +342,6 @@ def admin_decom_resource(request, pk):
     resource = Resource.objects.get(id=pk)
 
     if request.method == "GET":
-        print(request.GET)
         resource.status = 'DECOMMISIONED'
         resource.save()
         return redirect('admin_manage_resources')

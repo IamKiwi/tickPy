@@ -28,7 +28,12 @@
                             {% csrf_token %}
                             <div class="form-group row">
                                 <div class="col-sm-4 mb-3 mb-sm-0">
-                                    {{ ticket_form.queue }}
+                                    <select name="queue" class="form-control" required="" id="id_queue">
+                                        <option value="" selected="">---------</option>
+                                        {% for queue in queues%}
+                                        <option value="{{queue.id}}">{{queue.name}}</option>
+                                        {% endfor %}
+                                    </select>
                                 </div>
                                 <div class="col-sm-4">
                                     {{ ticket_form.priority}}
