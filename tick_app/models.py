@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -17,11 +18,12 @@ class Resource(models.Model):
     category = models.ForeignKey(Category, null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
-        return self.name
+        return f"{self.name} | {self.serial_no}"
 
 
 class Queue(models.Model):
     name = models.CharField(max_length=200, null=True)
+    assigned_users = models.ManyToManyField(User, blank=True)
 
     def __str__(self):
         return self.name
@@ -42,10 +44,13 @@ class Ticket(models.Model):
         ('Abandoned', 'Abandoned'),
         ('Info required', 'Info required'),
         ('Updated', 'Updated'),
+        ('Active', 'Active'),
     )
 
     queue = models.ForeignKey(Queue, on_delete=models.CASCADE)
     resource = models.ForeignKey(Resource, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    assigned_engineer = models.CharField(max_length=100, blank=True)
     priority = models.CharField(max_length=16, choices=PRIORITY)
     short_desc = models.CharField(max_length=50)
     long_desc = models.TextField()

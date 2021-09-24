@@ -33,6 +33,7 @@
             <i class="fas fa-eye"></i>
             <span>Track my tickets</span></a>
     </li>
+    {% if request.user.groups.get.name == 'engineer' or request.user.groups.get.name == 'admin' %}
     <hr class="sidebar-divider">
 
     <!-- Heading -->
@@ -41,7 +42,7 @@
     </div>
 
     <li class="nav-item">
-        <a class="nav-link" href="#">
+        <a class="nav-link" href="{% url 'engineer_queue_tracking' %}">
             <i class="fas fa-clipboard-list"></i>
             <span>Tickets on my queues</span></a>
     </li>
@@ -50,12 +51,9 @@
             <i class="fas fa-user-tag"></i>
             <span>Assigned to me</span></a>
     </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#">
-            <i class="fas fa-user-plus"></i>
-            <span>Opened by me</span></a>
-    </li>
+    {% endif %}
 
+    {% if request.user.groups.get.name == "admin"%}
     <!-- Divider -->
     <hr class="sidebar-divider">
     <div class="sidebar-heading">
@@ -83,5 +81,6 @@
     <div class="text-center d-none d-md-inline">
         <button class="rounded-circle border-0" id="sidebarToggle"></button>
     </div>
+    {% endif %}
 </ul>
 <!-- End of Sidebar -->

@@ -1,0 +1,29 @@
+{% load static %}
+
+<div class="modal fade" id="abandonModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addCategoryLabel">Add Comment</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <form id="comment-ticket-form" method="POST" action="{% url 'abandon_ticket' ticket.id %}">
+                <div class="modal-body">
+                    {% csrf_token %}
+                    <textarea name="comment" cols="40" rows="2" class="form-control" placeholder="Please specify abandon reason" required="" id="id_comment"></textarea>
+
+                    <input type="text" id="id_ticket" name="ticket" value="{{ticket.id}}" hidden>
+
+                    <div class="modal-footer">
+                        <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
+                        <input type="submit" class="btn btn-success">
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>

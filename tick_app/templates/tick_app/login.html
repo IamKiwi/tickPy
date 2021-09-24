@@ -29,19 +29,18 @@
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">Please log in</h1>
                                     </div>
-                                    <form class="user">
+                                    <form class="user" method="POST" action="{% url 'login' %}">
+                                        {% csrf_token %}
                                         <div class="form-group">
-                                            <input type="email" class="form-control form-control-user"
-                                                id="exampleInputEmail" aria-describedby="emailHelp"
+                                            <input type="text" class="form-control form-control-user"
+                                                name="username" aria-describedby="emailHelp"
                                                 placeholder="Username">
                                         </div>
                                         <div class="form-group">
                                             <input type="password" class="form-control form-control-user"
-                                                id="exampleInputPassword" placeholder="Password">
+                                                placeholder="Password" name="password">
                                         </div>
-                                        <a href="{% url 'home' %}" class="btn btn-primary btn-user btn-block">
-                                            Login
-                                        </a>
+                                        <input type="submit" class="btn btn-primary btn-user btn-block" value="Login">
                                     </form>
                                     <hr>
                                     <div class="text-center">

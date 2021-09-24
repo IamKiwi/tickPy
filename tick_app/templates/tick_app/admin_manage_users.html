@@ -43,14 +43,26 @@
                                         <thead>
                                         <tr>
                                             <th>User ID</th>
-                                            <th>Name</th>
+                                            <th>Username</th>
+                                            <th>Full Name</th>
                                             <th>Email</th>
                                             <th>System Role</th>
                                             <th>Options</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-
+                                        {% for user in users %}
+                                        <tr>
+                                            <td>{{ user.id }}</td>
+                                            <td>{{ user.username }}</td>
+                                            <td>{{ user.first_name }} {{ user.last_name }}</td>
+                                            <td>{{ user.email }}</td>
+                                            <td>{{ user.groups.get }}</td>
+                                            <td>
+                                                <a class="btn btn-sm btn-danger" href="#"><i class="fas fa-trash" title="Remove"></i></a>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
                                         </tbody>
                                     </table>
                                 </div>

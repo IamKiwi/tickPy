@@ -28,7 +28,7 @@
                                         <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
                                             Opened tickets
                                         </div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ total_tickets }}</div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ total_opened_tickets }}</div>
                                     </div>
                                     <div class="col-auto">
                                         <i class="fas fa-clone fa-2x text-info"></i>
@@ -46,7 +46,7 @@
                                         <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                             Resolved Tickets
                                         </div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800">0</div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ total_resolved_tickets }}</div>
                                     </div>
                                     <div class="col-auto">
                                         <i class="fas fa-check-circle fa-2x text-success"></i>
@@ -66,7 +66,7 @@
                                         </div>
                                         <div class="row no-gutters align-items-center">
                                             <div class="col-auto">
-                                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">0</div>
+                                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{ total_new_tickets}}</div>
                                             </div>
                                         </div>
                                     </div>
@@ -86,7 +86,7 @@
                                         <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                                             In Progress
                                         </div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800">0</div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ total_in_progress }}</div>
                                     </div>
                                     <div class="col-auto">
                                         <i class="fas fa-screwdriver fa-2x text-warning"></i>

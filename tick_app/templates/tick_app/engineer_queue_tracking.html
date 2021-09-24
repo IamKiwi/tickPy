@@ -1,0 +1,75 @@
+{% extends 'tick_app/main.html' %}
+{% load static %}
+{% block title %} Engineer queue tracking {% endblock %}
+{% block content %}
+
+<body id="page-top">
+<div id="wrapper">
+    {% include 'tick_app/sidebar.html'%}
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+            <!-- Topbar -->
+            {% include 'tick_app/navbar.html'%}
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+                <!-- Page Heading -->
+                <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                    <h1 class="h3 mb-0 text-gray-800">Queues tracking</h1>
+                </div>
+
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Check status of tickets on my queues</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                <tr>
+                                    <th>Ticket ID</th>
+                                    <th>Opened By</th>
+                                    <th>Short Description</th>
+                                    <th>Queue</th>
+                                    <th>Priority</th>
+                                    <th>Status</th>
+                                    <th>Assigned to</th>
+                                    <th>SLA</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for i in my_tickets %}
+                                {% for ticket in i %}
+                                <tr>
+                                    <td><a href="{% url 'show_ticket' ticket.id %}">INC_{{ ticket.id }}</a></td>
+                                    <td>{{ ticket.user.first_name}} {{ ticket.user.last_name}}</td>
+                                    <td>{{ ticket.short_desc }}</td>
+                                    <td>{{ ticket.queue }}</td>
+                                    <td>{{ ticket.priority }}</td>
+                                    <td>{{ ticket.status }}</td>
+                                    <td>Assignement engineer goes here</td>
+                                    <td>{{ ticket.date_created }}</td>
+                                </tr>
+                                {% endfor %}
+                                {% endfor %}
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            <!-- End of Main Content -->
+            <!-- Footer -->
+        </div>
+        {% include 'tick_app/footer.html' %}
+        <!-- End of Footer -->
+        <!-- End of Content Wrapper -->
+    </div>
+</div>
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+{% endblock %}
