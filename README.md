@@ -38,3 +38,19 @@ Użytkownik - osoba wystawiająca zgłoszenia problemów:
 - może wystawić zgłoszenie na dowolną kolejkę
 - może zgłosić problem tylko dla zasobów, dla których przypisał ją administrator
 - może ustalić priorytet zgłoszenia
+
+# Dostęp do aplikacji:
+W załączonej bazie danych sqlite znajdują się przykładowe dane oraz kilku użytkowników:
+customer_1 - z rolą zwykłego użytkownika
+customer_2 - z rolą zwykłego użytkownika
+hasło: 
+qwe123rty
+
+engineer_1 - z rolą rozszerzającą uprawnienia użytkownika
+engineer_2 - z rolą rozszerzającą uprawnienia użytkownika
+hasło:
+qwe123rty
+
+admin - superuser
+hasło:
+qazwsx
