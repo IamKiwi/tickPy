@@ -4,7 +4,7 @@
 
 - Język Python 3.8
 - Framework Django - Backend
-- Vue.js - Frontend
+- <del>Vue.js - Frontend</del> <-- (zabrakło czasu :( ) System szablonowania wbudowany w Django
 
 # Funkcjonalności:
 
